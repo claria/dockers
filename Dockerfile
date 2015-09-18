@@ -1,6 +1,7 @@
 ##
 ## hepsw/cvmfs-base
-## A container where CernVM-FS is up and running, just copied from 
+## A container where CernVM-FS is up and running,
+## adapted from hepsw/docks from Sebastian Binet "binet@cern.ch"
 ##
 FROM hepsw/slc-base
 MAINTAINER Georg Sieber "sieber@cern.ch"
@@ -23,12 +24,9 @@ RUN yum update -y && yum -y install \
     cvmfs-config-default \
     freetype fuse \
     glibc-headers \
+    glibc-devel \
     ; \
     yum clean all
-
-RUN mkdir -p \
-    /cvmfs/cernvm-prod.cern.ch \
-    /cvmfs/sft.cern.ch \
 
 RUN mkdir -p /cvmfs/cms.cern.ch && \
     echo "cms.cern.ch /cvmfs/cms.cern.ch cvmfs defaults 0 0" >> /etc/fstab
@@ -43,14 +41,11 @@ ADD etc-cvmfs-keys          /etc/cvmfs/keys
 
 ADD run-cvmfs.sh /etc/cvmfs/run-cvmfs.sh
 
-# RUN chmod uga+rx \
-#         /etc/cvmfs/run-cvmfs.sh \
-#         ;
-#
-#VOLUME ["/cvmfs"]
+RUN chmod uga+rx \
+        /etc/cvmfs/run-cvmfs.sh \
+        ;
+
+VOLUME ["/cvmfs"]
 
 ## make the whole container seamlessly executable
 CMD ["bash"]
-
-## EOF
-

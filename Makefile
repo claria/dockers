@@ -2,7 +2,7 @@
 
 .PHONY: all build
 
-REPO := claria/slc6-cvmfs
+REPO := claria/cvmfs-cms
 TAG ?= $(shell date +%Y%m%d)
 
 all: build
